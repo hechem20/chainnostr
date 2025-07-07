@@ -4,15 +4,16 @@ import time
 import json
 import hashlib
 import requests
-import secp256k1
+from ecdsa import SigningKey, SECP256k1
 
 app = Flask(__name__)
 
 # Clé privée Nostr (exemple)
 PRIVATE_KEY_HEX = "1f0aa9c3e6a2090c70aa10f6e3d48fef367308507b1649022ec23f6ab2fc9f94"
 privkey = bytes.fromhex(PRIVATE_KEY_HEX)
-signing_key = secp256k1.PrivateKey(privkey)
-pubkey = signing_key.pubkey.serialize(compressed=False).hex()[2:]
+signing_key = SigningKey.from_string(privkey, curve=SECP256k1)
+verifying_key = signing_key.get_verifying_key()
+pubkey = verifying_key.to_string().hex()
 
 # Relai Nostr public
 RELAY_URL = "https://nostr-relay.nostr.band/"
