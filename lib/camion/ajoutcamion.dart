@@ -28,7 +28,7 @@ class _AjoutCamionState extends State<AjoutCamion> {
   void initState() {
     super.initState();
     _requestLocationPermissionAndStartTracking();
-    _startTracking();
+    //_startTracking();
     //_startSendTimer();
   }
 
@@ -120,7 +120,7 @@ class _AjoutCamionState extends State<AjoutCamion> {
     final response = await http.post(
       Uri.parse("http://10.0.2.2:5000/events"), // Ton relay Nostr
       headers: {"Content-Type": "application/json"},
-      body: nostrEvent.toString(), // Tu peux utiliser jsonEncode ici
+      body: jsonEncode(nostrEvent), 
     );
 
     if (response.statusCode == 200) {
@@ -142,7 +142,7 @@ class _AjoutCamionState extends State<AjoutCamion> {
 
   @override
   void dispose() {
-    _timer.cancel();
+    _timer?.cancel();
     super.dispose();
   }
 
